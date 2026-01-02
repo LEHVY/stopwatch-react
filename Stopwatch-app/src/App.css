@@ -1,0 +1,43 @@
+:root {
+  --color-light: #F9F8F6;
+  --color-light-md: #EFE9E3;
+  --color-dark-md: #D9CFC7;
+  --color-dark: #C9B59C;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+
+}
+
+
+body {
+  background: var(--color-light);
+  color: var(--color-dark);
+
+}
+
+.timer {
+  border: 3px teal solid;
+  margin: 4px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  padding: 15px;
+  color: rgba(0, 0, 0, 0.822);
+}
+
+.startBtn {
+margin-left: 2px;
+}
+
+.stopBtn {
+margin-left: 2px;
+}
+
+.resetBtn {
+margin-left: 2px;
+
+}
