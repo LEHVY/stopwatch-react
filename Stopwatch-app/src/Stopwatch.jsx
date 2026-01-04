@@ -1,11 +1,13 @@
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useSyncExternalStore } from "react"
 
 
 export default function Stopwatch() {
-    const [hours, setHours] = useState(0)
-    const [minutes, setMinutes] = useState(0)
+
+    const [count, setCount] = useState(58)
     const [seconds, setSeconds] = useState(0)
+    const [minutes, setMinutes] = useState(0)
+    const [hours, setHours] = useState(0)
     const [isRunning, setIsRunning] = useState(false)
     const timerRef = useRef(null);
 
@@ -13,45 +15,38 @@ export default function Stopwatch() {
         setIsRunning(prev => !prev);
     }
     useEffect(() => {
-        if (isRunning) {
-            timerRef.current = setInterval(() => {
-                setSeconds(s => s + 1);
-                if (seconds === 60 && minutes === 60) {
-                    setSeconds(0)
-                    setMinutes(0)
-                    setHours(currentHour => currentHour + 1)
-                } else if (seconds === 60 && minutes < 60) {
-                    setSeconds(0)
-                    setMinutes(currentMinute => currentMinute + 1)
+        if (!isRunning) return;
 
-                }
-            }, 1000);
+        timerRef.current = setInterval(() => {
 
-        } else {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-        }
+            setCount(s => {
+                let newCount = s + 1;
+                return newCount;
+            });
+        }, 1000);
 
-        return () => {
-            clearInterval(timerRef.current);
-        };
+        return () => clearInterval(timerRef.current);
     }, [isRunning]);
+
+    useEffect(() => {
+        setSeconds(s => count % 60);
+        setMinutes(m => parseInt(count / 60) % 60);
+        setHours(h => parseInt(count / 3600) % 24)
+    }, [count])
 
 
     function Stop() {
         setIsRunning(false)
-        setHours(0);
-        setMinutes(0);
-        setSeconds(0);
+
+        setCount(0)
 
     }
     function Reset() {
         // String(setHours(0)).padStart(3, "0")
         // String(setMinutes(0)).padStart(3, "0")
         // String(seconds).padStart(3, "0")
-        setHours(0)
-        setMinutes(0)
-        setSeconds(0)
+        setCount(0)
+
     }
     return (
         <>
